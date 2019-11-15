@@ -18,6 +18,10 @@
       background-color:  #000;
       font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     }
+    *, *:before, *:after {
+      box-sizing: border-box;
+    }
+
     .hero-video {
       height: 100vh;
       width: 100vw;
@@ -75,11 +79,16 @@
       color: #fff;
       text-transform: uppercase;
       letter-spacing: 3px;
-      animation: color-change 10s infinite;
     }
 
     .content a:hover {
       text-decoration: underline;
+    }
+
+    a {
+      animation: color-change 10s infinite;
+      text-decoration: none;
+      white-space: nowrap;
     }
 
     .content:before {
@@ -103,6 +112,93 @@
       75% { color: #da29a2; }
       100% { color: #fefc51; }
     }
+    @keyframes border-color-change {
+      0% { border-color: #fefc51; }
+      25% { border-color: #da29a2; }
+      50% { border-color: #9b4aff; }
+      75% { border-color: #da29a2; }
+      100% { border-color: #fefc51; }
+    }
+    @keyframes bg-color-change {
+      0% { background-color: #fefc51; }
+      25% { background-color: #da29a2; }
+      50% { background-color: #9b4aff; }
+      75% { background-color: #da29a2; }
+      100% { background-color: #fefc51; }
+    }
+
+
+    #slack {
+      display: none;
+    }
+    #slack.show {
+      display: flex;
+    }
+    #slackClose {
+      padding: 10px;
+      position: absolute;
+      top: 0;
+      right: 0;
+      cursor: pointer;
+      color: #ffffff;
+      animation: bg-color-change 10s infinite;
+      background-color: red;
+      border-radius: 0 0 0 8px;
+    }
+    .closeIcon {
+      width: 20px;
+      height: 20px;
+    }
+
+    h2 {
+      font-size: 48px;
+      font-weight: 100;
+    }
+
+    .Modal {
+      position: fixed;
+      background-color: rgba(0,0,0,0.6);
+      z-index: 10000;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      overscroll-behavior: none;
+    }
+
+    .Modal .frame {
+      position: relative;
+      border-radius: 8px;
+      box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+      overflow: hidden;
+      width: calc(100% - 200px);
+      max-width: 980px;
+      max-height: calc(100% - 64px);
+      min-height: 320px;
+      background-color: black;
+      border: 2px solid red;
+      padding: 48px;
+      color: #ffffff;
+      animation: border-color-change 10s infinite;
+    }
+
+
+    .button {
+      text-transform: uppercase;
+      display: inline-block;
+      color: #000;
+      animation: bg-color-change 10s infinite;
+      padding: 0 16px;
+      height: 48px;
+      line-height: 48px;
+      border-radius: 4px;
+      text-decoration: none;
+    }
+
 
     @media only screen and (max-width: 900px) {
       .hero-video {
@@ -125,8 +221,33 @@
       .content:before {
         display: none;
       }
+      .Modal .frame {
+        max-height: calc(100% - 32px);
+        width: calc(100% - 24px);
+        padding: 24px;
+      }
+
+      h2 {
+        font-size: 32px;
+      }
+
+      a {
+        white-space: normal;
+      }
     }
   </style>
+
+  <script>
+    function slackModal(show) {
+      var element = document.getElementById('slack');
+
+      if (show) {
+        element.classList.add('show');
+      } else {
+        element.classList.remove('show');
+      }
+    }
+  </script>
 
 </head>
 <body>
@@ -145,7 +266,27 @@
   <div class="content">
     <a target="_blank" href="https://blog.spinnaker.io/managed-delivery-evolving-continuous-delivery-at-netflix-eb74877fb33c">intro</a>
     <a target="_blank" href="https://github.com/spinnaker/keel">github</a>
-    <a target="_blank" href="#">get updates</a>
+    <a href="#" onclick="slackModal(true)">get updates</a>
+  </div>
+
+  <div id="slack" class="Modal">
+
+    <div class="frame">
+      <div id="slackClose" onclick="slackModal(false)">
+        <img class="closeIcon" src="src/close.svg" />
+      </div>
+
+      <h2>
+        Managed Delivery is an open-source effort, with
+        <a href="https://docs.google.com/document/d/1qgtwod1WC9pGNLyq7j1pXDLCAhO3Norf3Afx1FP4Jag" target="_blank">bi-weekly google meets</a>
+        and active discussion in the
+        <a href="slack://channel?id=CERACDPDZ&team=T091CRSGH">#sig-spinnaker-as-code</a>
+        slack channel.
+      </h2>
+
+      <a target="_blank" href="http://join.spinnaker.io/" class="button">Join Our Slack</a>
+    </div>
+
   </div>
 
 </body>
